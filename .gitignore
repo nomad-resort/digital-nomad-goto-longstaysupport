@@ -1,0 +1,7 @@
+node_modules
+dist
+.vscode
+.DS_Store
+*.local
+process_data.py
+application_goto.csv
