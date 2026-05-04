@@ -172,6 +172,23 @@ function App() {
         </div>
 
         <div className="card animate-fade-in">
+          <h3 className="chart-title">国籍・居住地域別（Top 10）</h3>
+          <div style={{ width: '100%', height: 300 }}>
+            <ResponsiveContainer>
+              <BarChart data={dashboardData.countryData} layout="vertical">
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" horizontal={false} />
+                <XAxis type="number" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                <YAxis dataKey="name" type="category" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} width={100} />
+                <Tooltip 
+                  contentStyle={{ backgroundColor: '#1e293b', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
+                />
+                <Bar dataKey="value" fill="#10b981" radius={[0, 4, 4, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        <div className="card animate-fade-in">
           <h3 className="chart-title">プラン別人気度</h3>
           <div style={{ width: '100%', height: 300 }}>
             <ResponsiveContainer>

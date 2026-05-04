@@ -21,7 +21,7 @@
     },
     {
       "name": "2\u6708",
-      "value": 27
+      "value": 25
     },
     {
       "name": "3\u6708",
@@ -53,7 +53,7 @@
     },
     {
       "name": "10\u6708",
-      "value": 154
+      "value": 152
     },
     {
       "name": "11\u6708",
@@ -65,7 +65,7 @@
     },
     {
       "name": "Flexible",
-      "value": 141
+      "value": 101
     }
   ],
   "dailyData": [
@@ -128,6 +128,48 @@
     {
       "date": "05/03",
       "count": 6
+    }
+  ],
+  "countryData": [
+    {
+      "name": "Israel",
+      "value": 830
+    },
+    {
+      "name": "Other",
+      "value": 77
+    },
+    {
+      "name": "USA/Canada",
+      "value": 21
+    },
+    {
+      "name": "Germany",
+      "value": 9
+    },
+    {
+      "name": "UK",
+      "value": 9
+    },
+    {
+      "name": "Italy",
+      "value": 7
+    },
+    {
+      "name": "Netherlands",
+      "value": 7
+    },
+    {
+      "name": "Spain",
+      "value": 6
+    },
+    {
+      "name": "Taiwan",
+      "value": 4
+    },
+    {
+      "name": "France",
+      "value": 4
     }
   ],
   "applicants": [
