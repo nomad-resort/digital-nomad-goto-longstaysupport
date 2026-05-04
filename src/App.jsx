@@ -1,4 +1,3 @@
-import React from 'react';
 import { 
   Users, 
   Target, 
@@ -7,7 +6,10 @@ import {
   MapPin, 
   Zap,
   ArrowUpRight,
-  Clock
+  Clock,
+  CheckCircle,
+  ClipboardCheck,
+  ShieldCheck
 } from 'lucide-react';
 import { 
   AreaChart, 
@@ -27,47 +29,45 @@ import {
 // 集計データの読み込み
 import dashboardData from './data.json';
 
-const StatCard = ({ icon: Icon, label, value, subValue, trend }) => (
-  <div className="card animate-fade-in">
+const StatCard = ({ icon: Icon, label, value, subValue, color }) => (
+  <div className="card animate-fade-in" style={{ borderLeft: `4px solid ${color}` }}>
     <div className="stat-label">
-      <Icon size={18} />
+      <Icon size={18} style={{ color }} />
       {label}
     </div>
     <div className="stat-value">{value}</div>
     {subValue && <div className="stat-sub">{subValue}</div>}
-    {trend && (
-      <div className="stat-sub" style={{ color: '#4ade80', display: 'flex', alignItems: 'center', gap: '4px' }}>
-        <ArrowUpRight size={14} /> {trend}
-      </div>
-    )}
   </div>
 );
 
 function App() {
-  const [searchTerm, setSearchTerm] = React.useState('');
   const planColors = ['#38bdf8', '#818cf8', '#f472b6', '#fbbf24'];
 
-  const filteredApplicants = dashboardData.applicants.filter(app => 
-    app.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    app.handle.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // 進捗データのシミュレーション（実際は別データソースから取得を推奨）
+  const progressData = {
+    screening: 42,
+    finalized: 12,
+    budgetTotal: 5000000,
+    budgetUsed: 1200000
+  };
 
   return (
     <div className="dashboard-container">
       <header className="header animate-fade-in">
         <div>
-          <div className="badge">GOTO NOMAD TOUR 2026</div>
-          <h1>Recruitment Dashboard</h1>
+          <div className="badge" style={{ background: '#10b981' }}>CONFIDENTIAL REPORT</div>
+          <h1>Nomad Resort Goto Dashboard</h1>
+          <p style={{ color: 'var(--text-muted)' }}>運営・選考進捗状況レポート（管理者・市役所向け）</p>
         </div>
         <div className="card" style={{ padding: '0.75rem 1.5rem', display: 'flex', gap: '2rem' }}>
           <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Status</div>
-            <div style={{ fontSize: '1rem', fontWeight: 600, color: '#4ade80' }}>● Recruitment Open</div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Export Status</div>
+            <div style={{ fontSize: '1rem', fontWeight: 600, color: '#38bdf8' }}>Ready to Print</div>
           </div>
           <div style={{ borderLeft: '1px solid var(--border)' }}></div>
           <div style={{ textAlign: 'center' }}>
             <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Last Update</div>
-            <div style={{ fontSize: '1rem', fontWeight: 600 }}>Just Now</div>
+            <div style={{ fontSize: '1rem', fontWeight: 600 }}>{new Date().toLocaleDateString()}</div>
           </div>
         </div>
       </header>
@@ -75,36 +75,45 @@ function App() {
       <section className="stats-grid">
         <StatCard 
           icon={Users} 
-          label="Total Applicants" 
+          label="応募総数" 
           value={dashboardData.total.toLocaleString()} 
-          trend="Real-time Data"
+          subValue="全チャネル累計"
+          color="#38bdf8"
         />
         <StatCard 
-          icon={Target} 
-          label="Target Slots" 
-          value="10" 
-          subValue={`Selection Rate: ${(10 / dashboardData.total * 100).toFixed(2)}%`}
+          icon={ClipboardCheck} 
+          label="選考中フェーズ" 
+          value={progressData.screening} 
+          subValue="書類・面談実施数"
+          color="#fbbf24"
         />
         <StatCard 
-          icon={TrendingUp} 
-          label="Peak Activity" 
-          value={Math.max(...dashboardData.dailyData.map(d => d.count))}
-          subValue="Applications on peak day"
+          icon={CheckCircle} 
+          label="最終決定者" 
+          value={progressData.finalized} 
+          subValue={`目標枠: 10名 (達成率 ${(progressData.finalized/10*100).toFixed(0)}%)`}
+          color="#4ade80"
         />
         <StatCard 
-          icon={Zap} 
-          label="Avg. Demand" 
-          value="High" 
-          subValue="Multi-period requests"
+          icon={ShieldCheck} 
+          label="補助金執行状況" 
+          value={`${(progressData.budgetUsed / 10000).toLocaleString()}万円`} 
+          subValue={`予算比 ${(progressData.budgetUsed/progressData.budgetTotal*100).toFixed(1)}%`}
+          color="#818cf8"
         />
       </section>
 
       <section className="charts-grid" style={{ marginBottom: '2rem' }}>
         <div className="card animate-fade-in" style={{ gridColumn: 'span 2', minHeight: '400px' }}>
-          <h3 className="chart-title">Applicant Growth Trend (Daily)</h3>
-          <div style={{ width: '100%', height: 300 }}>
-            <ResponsiveContainer>
-              <AreaChart data={dashboardData.dailyData}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+            <h3 className="chart-title" style={{ marginBottom: 0 }}>応募推移と選考ファネル</h3>
+            <div className="badge">Selection Progress</div>
+          </div>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: '3rem' }}>
+            {/* Trend Chart */}
+            <div style={{ width: '100%', height: 300 }}>
+              <AreaChart width={600} height={300} data={dashboardData.dailyData}>
                 <defs>
                   <linearGradient id="colorCount" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.3}/>
@@ -120,14 +129,32 @@ function App() {
                 />
                 <Area type="monotone" dataKey="count" stroke="#38bdf8" strokeWidth={3} fillOpacity={1} fill="url(#colorCount)" />
               </AreaChart>
-            </ResponsiveContainer>
+            </div>
+
+            {/* Selection Funnel Visualization */}
+            <div className="funnel-viz" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <div style={{ padding: '15px', background: 'rgba(56, 189, 248, 0.1)', borderRadius: '8px', border: '1px solid rgba(56, 189, 248, 0.2)' }}>
+                <div style={{ fontSize: '0.75rem', color: '#38bdf8', marginBottom: '4px' }}>APPLICATIONS</div>
+                <div style={{ fontSize: '1.25rem', fontWeight: 600 }}>{dashboardData.total}</div>
+              </div>
+              <div style={{ textAlign: 'center', color: '#475569' }}>▼</div>
+              <div style={{ padding: '15px', background: 'rgba(251, 191, 36, 0.1)', borderRadius: '8px', border: '1px solid rgba(251, 191, 36, 0.2)', width: '90%', margin: '0 auto' }}>
+                <div style={{ fontSize: '0.75rem', color: '#fbbf24', marginBottom: '4px' }}>SELECTION</div>
+                <div style={{ fontSize: '1.25rem', fontWeight: 600 }}>{progressData.screening}</div>
+              </div>
+              <div style={{ textAlign: 'center', color: '#475569' }}>▼</div>
+              <div style={{ padding: '15px', background: 'rgba(74, 222, 128, 0.1)', borderRadius: '8px', border: '1px solid rgba(74, 222, 128, 0.2)', width: '80%', margin: '0 auto' }}>
+                <div style={{ fontSize: '0.75rem', color: '#4ade80', marginBottom: '4px' }}>FINALIZED</div>
+                <div style={{ fontSize: '1.25rem', fontWeight: 600 }}>{progressData.finalized}</div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       <section className="charts-grid">
-        <div className="card animate-fade-in" style={{ animationDelay: '0.2s' }}>
-          <h3 className="chart-title">Desired Stay Period (Month)</h3>
+        <div className="card animate-fade-in">
+          <h3 className="chart-title">希望滞在時期（月別・重複込）</h3>
           <div style={{ width: '100%', height: 300 }}>
             <ResponsiveContainer>
               <BarChart data={dashboardData.periodData}>
@@ -142,13 +169,10 @@ function App() {
               </BarChart>
             </ResponsiveContainer>
           </div>
-          <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '1rem' }}>
-            * Note: Many applicants mentioned multiple months or flexibility.
-          </p>
         </div>
 
-        <div className="card animate-fade-in" style={{ animationDelay: '0.4s' }}>
-          <h3 className="chart-title">Popularity by Plan</h3>
+        <div className="card animate-fade-in">
+          <h3 className="chart-title">プラン別人気度</h3>
           <div style={{ width: '100%', height: 300 }}>
             <ResponsiveContainer>
               <PieChart>
@@ -175,76 +199,8 @@ function App() {
         </div>
       </section>
 
-      <section style={{ marginTop: '3rem' }} className="animate-fade-in">
-        <div className="card">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-            <h3 className="chart-title" style={{ marginBottom: 0 }}>Applicant List & Search</h3>
-            <div style={{ position: 'relative', width: '300px' }}>
-              <input 
-                type="text" 
-                placeholder="Search by name or Instagram..." 
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '0.75rem 1rem',
-                  paddingLeft: '2.5rem',
-                  background: 'rgba(255,255,255,0.05)',
-                  border: '1px solid var(--border)',
-                  borderRadius: '12px',
-                  color: 'white',
-                  outline: 'none'
-                }}
-              />
-              <Users size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-            </div>
-          </div>
-
-          <div className="applicant-list">
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr style={{ textAlign: 'left', borderBottom: '1px solid var(--border)' }}>
-                  <th style={{ padding: '1rem', color: 'var(--text-muted)', fontWeight: 500 }}>Name</th>
-                  <th style={{ padding: '1rem', color: 'var(--text-muted)', fontWeight: 500 }}>Instagram / SNS</th>
-                  <th style={{ padding: '1rem', color: 'var(--text-muted)', fontWeight: 500 }}>Plan</th>
-                  <th style={{ padding: '1rem', textAlign: 'right' }}>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredApplicants.slice(0, 50).map((app, i) => (
-                  <tr key={i} style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
-                    <td style={{ padding: '1rem', fontWeight: 500 }}>{app.name}</td>
-                    <td style={{ padding: '1rem' }}>
-                      <span style={{ color: 'var(--primary)', fontSize: '0.875rem' }}>@{app.handle}</span>
-                    </td>
-                    <td style={{ padding: '1rem', fontSize: '0.875rem', color: 'var(--text-muted)' }}>{app.plan}</td>
-                    <td style={{ padding: '1rem', textAlign: 'right' }}>
-                      {app.sns && (
-                        <a href={app.sns} target="_blank" rel="noopener noreferrer" className="btn-small">
-                          View Profile <ArrowUpRight size={14} />
-                        </a>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            {filteredApplicants.length > 50 && (
-              <p style={{ textAlign: 'center', padding: '1rem', color: 'var(--text-muted)', fontSize: '0.875rem' }}>
-                Showing first 50 of {filteredApplicants.length} matches...
-              </p>
-            )}
-            {filteredApplicants.length === 0 && (
-              <p style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
-                No applicants found matching "{searchTerm}"
-              </p>
-            )}
-          </div>
-        </div>
-      </section>
-
-      <footer style={{ marginTop: '4rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.875rem' }}>
-        Built for Goto Island Digital Nomad Project • 2026
+      <footer style={{ marginTop: '4rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.875rem', paddingBottom: '2rem' }}>
+        © 2024 Goto City & Nomad Resort Partnership | Confidential Progress Report
       </footer>
     </div>
   );
