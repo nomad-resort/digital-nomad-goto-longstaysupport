@@ -43,12 +43,12 @@ const StatCard = ({ icon: Icon, label, value, subValue, color }) => (
 function App() {
   const planColors = ['#38bdf8', '#818cf8', '#f472b6', '#fbbf24'];
 
-  // 進捗データのシミュレーション（実際は別データソースから取得を推奨）
+  // リアルな進捗データを取得（CSV集計結果）
   const progressData = {
-    screening: 42,
-    finalized: 12,
+    screening: (dashboardData.progress.phase1 || 0) + (dashboardData.progress.phase2 || 0),
+    finalized: dashboardData.progress.finalized || 0,
     budgetTotal: 5000000,
-    budgetUsed: 1200000
+    budgetUsed: (dashboardData.progress.finalized || 0) * 100000 // 仮に1人10万円として計算
   };
 
   return (
@@ -84,7 +84,7 @@ function App() {
           icon={ClipboardCheck} 
           label="選考中フェーズ" 
           value={progressData.screening} 
-          subValue="書類・面談実施数"
+          subValue="１次・２次選考実施数"
           color="#fbbf24"
         />
         <StatCard 
