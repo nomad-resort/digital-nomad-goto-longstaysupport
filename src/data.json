@@ -1,5 +1,6 @@
 {
-  "total": 984,
+  "total": 1156,
+  "flexible": 172,
   "budget": {
     "total": 600000,
     "used": 30000,
@@ -11,47 +12,56 @@
       {
         "month": "4\u6708",
         "finalized": 1,
-        "waitlist": 36
+        "waitlist": 32,
+        "capacity": 1
       },
       {
         "month": "5\u6708",
         "finalized": 0,
-        "waitlist": 48
+        "waitlist": 45,
+        "capacity": 1
       },
       {
         "month": "6\u6708",
         "finalized": 0,
-        "waitlist": 58
+        "waitlist": 49,
+        "capacity": 1
       },
       {
         "month": "7\u6708",
         "finalized": 0,
-        "waitlist": 115
+        "waitlist": 98,
+        "capacity": 2
       },
       {
         "month": "8\u6708",
         "finalized": 0,
-        "waitlist": 154
+        "waitlist": 140,
+        "capacity": 2
       },
       {
         "month": "9\u6708",
         "finalized": 0,
-        "waitlist": 183
+        "waitlist": 171,
+        "capacity": 2
       },
       {
         "month": "10\u6708",
         "finalized": 0,
-        "waitlist": 152
+        "waitlist": 130,
+        "capacity": 2
       },
       {
         "month": "11\u6708",
         "finalized": 0,
-        "waitlist": 88
+        "waitlist": 78,
+        "capacity": 1
       },
       {
         "month": "12\u6708",
         "finalized": 0,
-        "waitlist": 31
+        "waitlist": 26,
+        "capacity": 1
       }
     ]
   },
@@ -77,15 +87,15 @@
   "countryData": [
     {
       "name": "Israel",
-      "value": 830
+      "value": 681
     },
     {
       "name": "Other",
-      "value": 78
+      "value": 67
     },
     {
       "name": "USA/Canada",
-      "value": 21
+      "value": 16
     },
     {
       "name": "Germany",
@@ -93,19 +103,19 @@
     },
     {
       "name": "UK",
-      "value": 9
+      "value": 7
     },
     {
       "name": "Italy",
-      "value": 7
+      "value": 6
     },
     {
       "name": "Netherlands",
-      "value": 7
+      "value": 6
     },
     {
       "name": "Spain",
-      "value": 6
+      "value": 5
     },
     {
       "name": "Taiwan",

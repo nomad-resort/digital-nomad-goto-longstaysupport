@@ -72,43 +72,89 @@ function App() {
           icon={Users} 
           label="応募総数" 
           value={dashboardData.total.toLocaleString()} 
-          subValue="累計エントリー数"
+          subValue="全チャネル累計"
           color="#0ea5e9"
+        />
+        <StatCard 
+          icon={Calendar} 
+          label="いつでも来島可能" 
+          value={dashboardData.flexible} 
+          subValue="柔軟な日程の応募者数"
+          color="#f59e0b"
         />
         <StatCard 
           icon={CheckCircle} 
           label="来島確定者" 
           value={progress.finalized} 
-          subValue="4月利用中：1名"
+          subValue="4月：1名利用中"
           color="#10b981"
         />
         <StatCard 
           icon={ShieldCheck} 
           label="残り予算" 
           value={`${(budget.remaining / 10000).toLocaleString()}万円`} 
-          subValue={`予算総額: ${(budget.total / 10000).toLocaleString()}万円`}
+          subValue={`予算総額: 60万円`}
           color="#f43f5e"
-        />
-        <StatCard 
-          icon={TrendingUp} 
-          label="予算執行率" 
-          value={`${((budget.used / budget.total) * 100).toFixed(1)}%`} 
-          subValue={`累計執行額: ${(budget.used / 10000).toLocaleString()}万円`}
-          color="#6366f1"
         />
       </section>
 
-      <section className="charts-grid" style={{ marginBottom: '2rem' }}>
-        <div className="card animate-fade-in" style={{ gridColumn: 'span 2', minHeight: '450px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-            <div>
-              <h3 className="chart-title" style={{ marginBottom: '0.25rem' }}>月別来島予定と空席待ち</h3>
-              <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>確定済み人数 vs キャンセル待ち・検討中人数</p>
+      {/* Monthly Status Cards */}
+      <section style={{ marginBottom: '3rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+          <div>
+            <h2 style={{ fontSize: '1.5rem', fontWeight: 600 }}>月別来島ステータス</h2>
+            <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>各月の予約枠（スロット）の空き状況と、選考待ち人数</p>
+          </div>
+          <div className="badge">Project Capacity: 20 Slots</div>
+        </div>
+        
+        <div className="monthly-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem' }}>
+          {progress.monthly.map((m, i) => (
+            <div key={i} className="card animate-fade-in" style={{ padding: '1.25rem', border: m.finalized > 0 ? '1px solid #10b981' : '1px solid var(--border)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                <span style={{ fontWeight: 700, fontSize: '1.1rem' }}>{m.month}</span>
+                {m.finalized > 0 && <span className="badge" style={{ fontSize: '0.65rem', padding: '0.2rem 0.5rem', color: '#10b981', background: 'rgba(16, 185, 129, 0.1)' }}>Occupied</span>}
+              </div>
+              
+              {/* Slot Indicators */}
+              <div style={{ display: 'flex', gap: '8px', marginBottom: '1rem' }}>
+                {[...Array(m.capacity)].map((_, idx) => (
+                  <div 
+                    key={idx} 
+                    style={{ 
+                      width: '12px', 
+                      height: '12px', 
+                      borderRadius: '50%', 
+                      background: idx < m.finalized ? '#10b981' : '#e2e8f0',
+                      boxShadow: idx < m.finalized ? '0 0 8px #10b981' : 'none'
+                    }} 
+                  />
+                ))}
+              </div>
+
+              <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                  <span>確定済み</span>
+                  <span style={{ color: m.finalized > 0 ? 'var(--text-main)' : 'inherit', fontWeight: 600 }}>{m.finalized} 名</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span>空席待ち</span>
+                  <span style={{ color: 'var(--text-main)', fontWeight: 600 }}>{m.waitlist} 名</span>
+                </div>
+              </div>
             </div>
-            <div className="badge">Monthly Schedule</div>
+          ))}
+        </div>
+      </section>
+
+      <section className="charts-grid" style={{ marginBottom: '2rem' }}>
+        <div className="card animate-fade-in" style={{ gridColumn: 'span 2', minHeight: '400px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+            <h3 className="chart-title" style={{ marginBottom: 0 }}>月別 応募トレンド（母数）</h3>
+            <div className="badge">Demand Trends</div>
           </div>
           
-          <div style={{ width: '100%', height: 350 }}>
+          <div style={{ width: '100%', height: 300 }}>
             <ResponsiveContainer>
               <BarChart data={progress.monthly}>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.05)" vertical={false} />
@@ -116,10 +162,9 @@ function App() {
                 <YAxis stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
                 <Tooltip 
                   cursor={{ fill: 'rgba(0,0,0,0.02)' }}
-                  contentStyle={{ backgroundColor: '#fff', border: '1px solid rgba(0,0,0,0.1)', borderRadius: '12px', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
+                  contentStyle={{ backgroundColor: '#fff', border: '1px solid rgba(0,0,0,0.1)', borderRadius: '12px' }}
                 />
-                <Bar dataKey="finalized" name="来島確定" fill="#10b981" radius={[4, 4, 0, 0]} barSize={40} />
-                <Bar dataKey="waitlist" name="空席待ち" fill="#e2e8f0" radius={[4, 4, 0, 0]} barSize={40} />
+                <Bar dataKey="waitlist" name="応募者数" fill="#94a3b8" radius={[4, 4, 0, 0]} opacity={0.6} />
               </BarChart>
             </ResponsiveContainer>
           </div>
