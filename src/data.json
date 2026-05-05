@@ -1,15 +1,61 @@
 {
-  "total": 985,
+  "total": 984,
+  "budget": {
+    "total": 600000,
+    "used": 30000,
+    "remaining": 570000
+  },
   "progress": {
-    "phase1": 0,
-    "phase2": 0,
-    "finalized": 0
+    "finalized": 1,
+    "monthly": [
+      {
+        "month": "4\u6708",
+        "finalized": 1,
+        "waitlist": 36
+      },
+      {
+        "month": "5\u6708",
+        "finalized": 0,
+        "waitlist": 48
+      },
+      {
+        "month": "6\u6708",
+        "finalized": 0,
+        "waitlist": 58
+      },
+      {
+        "month": "7\u6708",
+        "finalized": 0,
+        "waitlist": 115
+      },
+      {
+        "month": "8\u6708",
+        "finalized": 0,
+        "waitlist": 154
+      },
+      {
+        "month": "9\u6708",
+        "finalized": 0,
+        "waitlist": 183
+      },
+      {
+        "month": "10\u6708",
+        "finalized": 0,
+        "waitlist": 152
+      },
+      {
+        "month": "11\u6708",
+        "finalized": 0,
+        "waitlist": 88
+      },
+      {
+        "month": "12\u6708",
+        "finalized": 0,
+        "waitlist": 31
+      }
+    ]
   },
   "planData": [
-    {
-      "name": "Unknown",
-      "value": 1
-    },
     {
       "name": "When would you like to stay in Goto?",
       "value": 1
@@ -27,118 +73,7 @@
       "value": 26
     }
   ],
-  "periodData": [
-    {
-      "name": "1\u6708",
-      "value": 22
-    },
-    {
-      "name": "2\u6708",
-      "value": 25
-    },
-    {
-      "name": "3\u6708",
-      "value": 34
-    },
-    {
-      "name": "4\u6708",
-      "value": 36
-    },
-    {
-      "name": "5\u6708",
-      "value": 48
-    },
-    {
-      "name": "6\u6708",
-      "value": 58
-    },
-    {
-      "name": "7\u6708",
-      "value": 115
-    },
-    {
-      "name": "8\u6708",
-      "value": 154
-    },
-    {
-      "name": "9\u6708",
-      "value": 183
-    },
-    {
-      "name": "10\u6708",
-      "value": 152
-    },
-    {
-      "name": "11\u6708",
-      "value": 88
-    },
-    {
-      "name": "12\u6708",
-      "value": 31
-    }
-  ],
-  "dailyData": [
-    {
-      "date": "03/23",
-      "count": 2
-    },
-    {
-      "date": "03/25",
-      "count": 1
-    },
-    {
-      "date": "03/26",
-      "count": 1
-    },
-    {
-      "date": "03/27",
-      "count": 1
-    },
-    {
-      "date": "03/28",
-      "count": 9
-    },
-    {
-      "date": "03/29",
-      "count": 1
-    },
-    {
-      "date": "03/30",
-      "count": 1
-    },
-    {
-      "date": "04/01",
-      "count": 1
-    },
-    {
-      "date": "04/04",
-      "count": 1
-    },
-    {
-      "date": "04/08",
-      "count": 4
-    },
-    {
-      "date": "04/10",
-      "count": 1
-    },
-    {
-      "date": "04/30",
-      "count": 42
-    },
-    {
-      "date": "05/01",
-      "count": 885
-    },
-    {
-      "date": "05/02",
-      "count": 27
-    },
-    {
-      "date": "05/03",
-      "count": 6
-    }
-  ],
+  "dailyData": [],
   "countryData": [
     {
       "name": "Israel",
@@ -146,7 +81,7 @@
     },
     {
       "name": "Other",
-      "value": 79
+      "value": 78
     },
     {
       "name": "USA/Canada",
