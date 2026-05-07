@@ -42,6 +42,7 @@ const StatCard = ({ icon: Icon, label, value, subValue, color }) => (
 
 function App() {
   const planColors = ['#0ea5e9', '#6366f1', '#f43f5e', '#f59e0b'];
+  const roleColors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16'];
 
   const budget = dashboardData.budget;
   const progress = dashboardData.progress;
@@ -98,6 +99,35 @@ function App() {
         />
       </section>
 
+      {/* Daily Application Trend */}
+      <section style={{ marginBottom: '3rem' }}>
+        <div className="card animate-fade-in" style={{ minHeight: '350px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+            <h3 className="chart-title" style={{ marginBottom: 0 }}>日次 応募推移</h3>
+            <div className="badge">Daily Momentum</div>
+          </div>
+          <div style={{ width: '100%', height: 250 }}>
+            <ResponsiveContainer>
+              <AreaChart data={dashboardData.dailyData}>
+                <defs>
+                  <linearGradient id="colorCount" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.05)" vertical={false} />
+                <XAxis dataKey="date" stroke="#64748b" fontSize={10} tickLine={false} axisLine={false} />
+                <YAxis stroke="#64748b" fontSize={10} tickLine={false} axisLine={false} />
+                <Tooltip 
+                  contentStyle={{ backgroundColor: '#fff', border: 'none', borderRadius: '12px', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
+                />
+                <Area type="monotone" dataKey="count" stroke="#0ea5e9" strokeWidth={3} fillOpacity={1} fill="url(#colorCount)" />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </section>
+
       {/* Monthly Status Cards */}
       <section style={{ marginBottom: '3rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
@@ -116,7 +146,6 @@ function App() {
                 {m.finalized > 0 && <span className="badge" style={{ fontSize: '0.65rem', padding: '0.2rem 0.5rem', color: '#10b981', background: 'rgba(16, 185, 129, 0.1)' }}>Occupied</span>}
               </div>
               
-              {/* Slot Indicators */}
               <div style={{ display: 'flex', gap: '8px', marginBottom: '1rem' }}>
                 {[...Array(m.capacity)].map((_, idx) => (
                   <div 
@@ -148,42 +177,22 @@ function App() {
       </section>
 
       <section className="charts-grid" style={{ marginBottom: '2rem' }}>
-        <div className="card animate-fade-in" style={{ gridColumn: 'span 2', minHeight: '400px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-            <h3 className="chart-title" style={{ marginBottom: 0 }}>月別 応募トレンド（母数）</h3>
-            <div className="badge">Demand Trends</div>
-          </div>
-          
-          <div style={{ width: '100%', height: 300 }}>
-            <ResponsiveContainer>
-              <BarChart data={progress.monthly}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.05)" vertical={false} />
-                <XAxis dataKey="month" stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
-                <YAxis stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
-                <Tooltip 
-                  cursor={{ fill: 'rgba(0,0,0,0.02)' }}
-                  contentStyle={{ backgroundColor: '#fff', border: '1px solid rgba(0,0,0,0.1)', borderRadius: '12px' }}
-                />
-                <Bar dataKey="waitlist" name="応募者数" fill="#94a3b8" radius={[4, 4, 0, 0]} opacity={0.6} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </section>
-
-      <section className="charts-grid">
         <div className="card animate-fade-in">
-          <h3 className="chart-title">国籍・居住地域別（Top 10）</h3>
+          <h3 className="chart-title">プロフェッショナル背景（職種）</h3>
           <div style={{ width: '100%', height: 300 }}>
             <ResponsiveContainer>
-              <BarChart data={dashboardData.countryData} layout="vertical">
+              <BarChart data={dashboardData.roleData} layout="vertical">
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.05)" horizontal={false} />
                 <XAxis type="number" stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
                 <YAxis dataKey="name" type="category" stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} width={100} />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#fff', border: '1px solid rgba(0,0,0,0.1)', borderRadius: '12px' }}
+                  contentStyle={{ backgroundColor: '#fff', border: 'none', borderRadius: '12px', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
                 />
-                <Bar dataKey="value" fill="#0ea5e9" radius={[0, 4, 4, 0]} />
+                <Bar dataKey="value" fill="#6366f1" radius={[0, 4, 4, 0]}>
+                  {dashboardData.roleData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={roleColors[index % roleColors.length]} />
+                  ))}
+                </Bar>
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -209,9 +218,28 @@ function App() {
                   ))}
                 </Pie>
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#fff', border: '1px solid rgba(0,0,0,0.1)', borderRadius: '12px' }}
+                  contentStyle={{ backgroundColor: '#fff', border: 'none', borderRadius: '12px', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
                 />
               </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </section>
+
+      <section className="charts-grid">
+        <div className="card animate-fade-in" style={{ gridColumn: 'span 2' }}>
+          <h3 className="chart-title">国籍・居住地域別（Top 10）</h3>
+          <div style={{ width: '100%', height: 300 }}>
+            <ResponsiveContainer>
+              <BarChart data={dashboardData.countryData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.05)" vertical={false} />
+                <XAxis dataKey="name" stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
+                <YAxis stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
+                <Tooltip 
+                  contentStyle={{ backgroundColor: '#fff', border: 'none', borderRadius: '12px', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
+                />
+                <Bar dataKey="value" fill="#0ea5e9" radius={[4, 4, 0, 0]} />
+              </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
