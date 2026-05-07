@@ -7,60 +7,69 @@
     "remaining": 570000
   },
   "progress": {
-    "finalized": 1,
+    "finalized": 2,
     "monthly": [
       {
         "month": "4月",
+        "stage1": 33,
+        "stage2": 2,
         "finalized": 1,
-        "waitlist": 32,
         "capacity": 1
       },
       {
         "month": "5月",
-        "finalized": 0,
-        "waitlist": 45,
+        "stage1": 41,
+        "stage2": 6,
+        "finalized": 1,
         "capacity": 1
       },
       {
         "month": "6月",
-        "finalized": 0,
-        "waitlist": 49,
+        "stage1": 45,
+        "stage2": 12,
+        "finalized": 1,
         "capacity": 1
       },
       {
         "month": "7月",
-        "finalized": 0,
-        "waitlist": 98,
+        "stage1": 110,
+        "stage2": 4,
+        "finalized": 1,
         "capacity": 2
       },
       {
         "month": "8月",
+        "stage1": 150,
+        "stage2": 4,
         "finalized": 0,
-        "waitlist": 140,
         "capacity": 2
       },
       {
         "month": "9月",
+        "stage1": 179,
+        "stage2": 4,
         "finalized": 0,
-        "waitlist": 171,
         "capacity": 2
       },
       {
         "month": "10月",
+        "stage1": 151,
+        "stage2": 1,
         "finalized": 0,
-        "waitlist": 130,
         "capacity": 2
       },
       {
         "month": "11月",
+        "stage1": 87,
+        "stage2": 1,
         "finalized": 0,
-        "waitlist": 78,
         "capacity": 1
       },
       {
         "month": "12月",
+        "stage1": 31,
+        "stage2": 0,
         "finalized": 0,
-        "waitlist": 26,
         "capacity": 1
       }
     ]

@@ -163,12 +163,16 @@ function App() {
 
               <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                  <span>確定済み</span>
-                  <span style={{ color: m.finalized > 0 ? 'var(--text-main)' : 'inherit', fontWeight: 600 }}>{m.finalized} 名</span>
+                  <span>１次選考中</span>
+                  <span style={{ color: 'var(--text-main)', fontWeight: 600 }}>{m.stage1} 名</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+                  <span>２次選考中</span>
+                  <span style={{ color: m.stage2 > 0 ? 'var(--secondary)' : 'inherit', fontWeight: 600 }}>{m.stage2} 名</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span>空席待ち</span>
-                  <span style={{ color: 'var(--text-main)', fontWeight: 600 }}>{m.waitlist} 名</span>
+                  <span>決定</span>
+                  <span style={{ color: m.finalized > 0 ? '#10b981' : 'inherit', fontWeight: 600 }}>{m.finalized} 名</span>
                 </div>
               </div>
             </div>
